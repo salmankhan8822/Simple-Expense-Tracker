@@ -1,4 +1,3 @@
-
 let expenseName = document.getElementById("expenseName");
 let expensePrice = document.getElementById("expensePrice");
 let addBtn = document.getElementById("addBtn");
@@ -14,38 +13,43 @@ addBtn.addEventListener("click", () => {
   let price = Number(expensePrice.value);
 
   if (name === "" || price <= 0) {
-    alert("please enter a vlid expense and amount");
+    alert("Please enter a valid expense and amount");
     return;
   }
 
   if (price > balance) {
-    alert("insufficient balance");
+    alert("Insufficient balance");
     return;
   }
 
+  // Create new list item
   let li = document.createElement("li");
-  li.textContent = `${name} - ${price} PKR`;
-  expenseList.appendChild(li);
+  li.textContent = `${name} - ${price} PKR `;
 
-  total += price;
-  totalExpense.textContent = total;
-
-  balance -= price;
-  totalIncome.textContent = balance;
-
+  // Create delete button
   let deleteBtn = document.createElement("button");
   deleteBtn.textContent = "Delete";
   deleteBtn.classList.add("deleteBtn");
-  deleteBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    totalExpense.textContent = 0;
-    totalIncome.textContent = 2000;
-    li.remove();
-    return;
+
+  // Delete button event
+  deleteBtn.addEventListener("click", () => {
+    expenseList.removeChild(li);
+    total -= price;
+    balance += price;
+    totalExpense.textContent = total;
+    totalIncome.textContent = balance;
   });
 
   li.appendChild(deleteBtn);
+  expenseList.appendChild(li);
 
+  // Update totals
+  total += price;
+  balance -= price;
+  totalExpense.textContent = total;
+  totalIncome.textContent = balance;
+
+  // Clear inputs
   expenseName.value = "";
   expensePrice.value = "";
 });
